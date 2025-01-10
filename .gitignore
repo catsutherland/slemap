@@ -1,0 +1,11 @@
+*.log
+.ipynb_checkpoints
+*.csv
+.RDataTmp*
+*.rds
+*RData
+*.png
+*.pdf
+*.h5ad
+data/
+*RData*
