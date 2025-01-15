@@ -9,3 +9,4 @@
 *.h5ad
 data/
 *RData*
+.ipynb
