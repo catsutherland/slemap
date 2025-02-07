@@ -212,6 +212,17 @@ has_single_bcr_or_tcr = has_single_bcr_or_tcr[~has_single_bcr_or_tcr.sample_cell
 has_single_bcr_or_tcr.to_csv("/lustre/scratch126/opentargets/opentargets/OTAR2064/working/users/cs54/final_data/2_BCR_TCR/1_IgBLAST_assignment/has_tcr_bcr_barcodes.csv", index = False)
 
 # %%
+has_single_bcr_barcode = has_single_bcr_or_tcr.query("VDJ == 'BCR'")['sample_cell_id'].copy()
+
+# %%
+bcr_df_heavy_single_bcr  = bcr_df.query("(sample_cell_id in @has_single_bcr_barcode) & (locus == 'IGH')").copy()
+bcr_df_heavy_single_bcr["sample"] = bcr_df_heavy_single_bcr["sample_cell_id"].str.rsplit("_", n=1).str[0]
+bcr_df_heavy_single_bcr["barcode"] = bcr_df_heavy_single_bcr["sample_cell_id"].str.rsplit("_", n=1).str[1]
+
+# %%
+bcr_df_heavy_single_bcr.to_csv("/lustre/scratch126/opentargets/opentargets/OTAR2064/working/users/cs54/final_data/2_BCR_TCR/1_IgBLAST_assignment/bcr_df_heavy_single_bcr.csv", index = False)
+
+# %%
 check_a = list(has_single_bcr_or_tcr.sample_cell_id)
 
 # %%

@@ -65,6 +65,19 @@ sc.settings.vector_friendly = True
 sc.settings.figdir = "/nfs/users/nfs_c/cs54/OTAR2064_cs54/final_data/Figures/umaps"
 
 ax = sc.pl.umap(freeze, 
+           color=["Azimuth:predicted.celltype.l1"], 
+           legend_fontsize='xx-small',
+           frameon=False,title=[''],
+#            palette = ["red","#709AE1FF"],
+           size=0.1,
+           save = "_azimuth_l1")
+
+# %%
+sc.set_figure_params(figsize=(3,3), dpi=500, dpi_save=500)
+sc.settings.vector_friendly = True
+sc.settings.figdir = "/nfs/users/nfs_c/cs54/OTAR2064_cs54/final_data/Figures/umaps"
+
+ax = sc.pl.umap(freeze, 
            color=["VDJ"], 
            legend_fontsize='xx-small',
            frameon=False,title=[''],

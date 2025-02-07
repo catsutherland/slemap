@@ -10,3 +10,5 @@
 data/
 *RData*
 .ipynb
+*.ipynb
+**.ipynb
