@@ -206,21 +206,8 @@ has_single_bcr_or_tcr = has_single_bcr_tcr.copy()
 
 has_single_bcr_or_tcr = has_single_bcr_or_tcr[~has_single_bcr_or_tcr.sample_cell_id.isin(list(set(has_trb) & set(has_igh)))]
 
-
-
 # %%
 has_single_bcr_or_tcr.to_csv("/lustre/scratch126/opentargets/opentargets/OTAR2064/working/users/cs54/final_data/2_BCR_TCR/1_IgBLAST_assignment/has_tcr_bcr_barcodes.csv", index = False)
-
-# %%
-has_single_bcr_barcode = has_single_bcr_or_tcr.query("VDJ == 'BCR'")['sample_cell_id'].copy()
-
-# %%
-bcr_df_heavy_single_bcr  = bcr_df.query("(sample_cell_id in @has_single_bcr_barcode) & (locus == 'IGH')").copy()
-bcr_df_heavy_single_bcr["sample"] = bcr_df_heavy_single_bcr["sample_cell_id"].str.rsplit("_", n=1).str[0]
-bcr_df_heavy_single_bcr["barcode"] = bcr_df_heavy_single_bcr["sample_cell_id"].str.rsplit("_", n=1).str[1]
-
-# %%
-bcr_df_heavy_single_bcr.to_csv("/lustre/scratch126/opentargets/opentargets/OTAR2064/working/users/cs54/final_data/2_BCR_TCR/1_IgBLAST_assignment/bcr_df_heavy_single_bcr.csv", index = False)
 
 # %%
 check_a = list(has_single_bcr_or_tcr.sample_cell_id)
@@ -231,34 +218,23 @@ check_b = list(tcr_bcr_doublet.sample_cell_id)
 # %%
 len(list(set(check_a) & set(check_b)))
 
-# %%
-AAACCTGAGCTCAACT-1-SLE_WGS13446469_LDP04__donor
+# %% [markdown]
+# # Get single heavy BCR chain info for simple annotation
 
 # %%
-metadata = pd.read_csv("/lustre/scratch126/opentargets/opentargets/OTAR2064/working/slemap/metadata/SLEmap_metadata_191224.csv")
+has_single_bcr_barcode = has_single_bcr_or_tcr.query("VDJ == 'BCR'")['sample_cell_id'].copy()
 
 # %%
-has_single_bcr_or_tcr["cellranger_file"] = has_single_bcr_or_tcr["sample_cell_id"].str.rsplit("_", n=1).str[0]
+bcr_df_heavy_single_bcr  = bcr_df.query("(sample_cell_id in @has_single_bcr_barcode) & (locus == 'IGH')").copy()
+bcr_df_heavy_single_bcr["sample"] = bcr_df_heavy_single_bcr["sample_cell_id"].str.rsplit("_", n=1).str[0]
+bcr_df_heavy_single_bcr["barcode"] = bcr_df_heavy_single_bcr["sample_cell_id"].str.rsplit("_", n=1).str[1]
 
 # %%
-has_single_bcr_or_tcr.iloc[1]['cellranger_file']
+bcr_df_heavy_single_bcr = bcr_df_heavy_single_bcr.dropna(subset = ["sequence_alignment", "germline_alignment"]).copy()
+
+
+bcr_df_heavy_single_bcr['mut_freq_v'] = bcr_df_heavy_single_bcr.apply(lambda row : get_mut_freq_v(row['sequence_alignment'],
+                 row['germline_alignment']), axis = 1)
 
 # %%
-
-# %%
-AAACCTGAGCTCAACT-1-SLE_WGS13446469_LDP04__donor
-
-# %%
-metadata.iloc[1]['cellranger_file']
-
-# %%
-pd.merge(has_single_bcr_or_tcr, metadata)
-
-# %%
-has_single_bcr_or_tcr
-
-# %%
-metadata
-
-# %%
-AAACCTGAGCTCAACT-1-SLE_WGS13446469_LDP04__donor
+bcr_df_heavy_single_bcr.to_csv("/lustre/scratch126/opentargets/opentargets/OTAR2064/working/users/cs54/final_data/2_BCR_TCR/1_IgBLAST_assignment/bcr_df_heavy_single_bcr.csv", index = False)

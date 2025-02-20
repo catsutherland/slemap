@@ -69,7 +69,8 @@ clinical_all$date_processed<-as.character(clinical_all$date_processed)
 
 
 # %%
-form <- ~ (1|externalID) + (1|poolID)+ (1|id_pool_lims) + (1|Flow_cell) + (1|Recruit_centre) + Age_at_sampling
+form <- ~ (1|externalID) + (1|poolID)+ (1|id_pool_lims) + 
+            (1|Flow_cell) + (1|Recruit_centre) + Age_at_sampling + (1|date_processed)
 
 # Compute Canonical Correlation Analysis (CCA)
 # between all pairs of variables
